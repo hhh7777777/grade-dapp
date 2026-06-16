@@ -1,0 +1,20 @@
+{
+  "name": "grade-dapp-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Grade DApp frontend",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ethers": "^6.15.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^5.4.8"
+  }
+}

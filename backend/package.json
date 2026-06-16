@@ -1,0 +1,17 @@
+{
+  "name": "grade-dapp-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Grade DApp backend service",
+  "scripts": {
+    "dev": "node src/app.js",
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.4",
+    "express": "^4.19.2"
+  }
+}
+
