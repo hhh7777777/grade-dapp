@@ -486,7 +486,6 @@ export default function Home() {
         <div className="hero__backdrop" aria-hidden="true" />
 
         <div className="hero__copy">
-          <p className="hero__eyebrow">Local Ethereum DApp</p>
           <h1>链上学生成绩管理系统</h1>
           <p className="hero__lead">查询成绩，管理员录入，结果上链。</p>
 
@@ -553,7 +552,7 @@ export default function Home() {
                   type="text"
                   value={queryStudentId}
                   onChange={(event) => setQueryStudentId(event.target.value)}
-                  placeholder="例如 20250001"
+                  placeholder="例如 20230001"
                 />
               </label>
 
