@@ -4,17 +4,19 @@
   "private": true,
   "description": "基于以太坊的链上学生成绩管理 DApp",
   "scripts": {
-    "compile": "hardhat compile",
-    "clean": "hardhat clean",
-    "test": "hardhat test",
-    "node": "hardhat node",
-    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "compile": "node scripts/compile.js",
+    "clean": "node scripts/clean.js",
+    "test": "mocha \"test/**/*.test.js\"",
+    "node": "ganache --host 127.0.0.1 --port 7545 --chain.chainId 1337 --wallet.mnemonic \"test test test test test test test test test test test junk\"",
+    "deploy:local": "node scripts/deploy.js",
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "dotenv": "^16.4.5",
-    "hardhat": "^2.26.2"
+    "ethers": "^6.16.0",
+    "ganache": "^7.9.2",
+    "mocha": "^10.7.3",
+    "solc": "^0.8.30"
   }
 }

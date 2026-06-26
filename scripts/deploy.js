@@ -1,31 +1,61 @@
 const fs = require("fs/promises");
 const path = require("path");
-const hre = require("hardhat");
+const { ContractFactory, JsonRpcProvider, Wallet } = require("ethers");
+require("dotenv").config();
+
+const GANACHE_RPC_URL = process.env.RPC_URL || "http://127.0.0.1:7545";
+const GANACHE_CHAIN_ID = Number(process.env.CHAIN_ID || 1337);
 
 async function main() {
-  // 使用 Hardhat 获取合约工厂，并由默认账户部署 GradeManager 合约。
-  const factory = await hre.ethers.getContractFactory("GradeManager");
+  const artifactFile = path.resolve(
+    __dirname,
+    "..",
+    "artifacts",
+    "contracts",
+    "GradeManager.sol",
+    "GradeManager.json"
+  );
+  const rawArtifact = await fs.readFile(artifactFile, "utf8");
+  const artifact = JSON.parse(rawArtifact);
+
+  const provider = new JsonRpcProvider(GANACHE_RPC_URL, GANACHE_CHAIN_ID);
+  const privateKey = process.env.ADMIN_PRIVATE_KEY;
+  const mnemonic = process.env.ADMIN_MNEMONIC;
+  let signer;
+  if (privateKey && privateKey.trim()) {
+    signer = new Wallet(privateKey.trim(), provider);
+  } else if (mnemonic && mnemonic.trim()) {
+    signer = Wallet.fromPhrase(mnemonic.trim()).connect(provider);
+  } else {
+    signer = await provider.getSigner(0);
+  }
+
+  const network = await provider.getNetwork();
+  const factory = new ContractFactory(artifact.abi, artifact.bytecode, signer);
   const contract = await factory.deploy();
   await contract.waitForDeployment();
 
-  // 部署后导出合约地址和 ABI，后端会读取该文件完成合约连接。
   const address = await contract.getAddress();
-  const artifact = await hre.artifacts.readArtifact("GradeManager");
   const deployment = {
-    network: hre.network.name,
+    network: "ganache",
+    chainId: Number(network.chainId),
+    rpcUrl: GANACHE_RPC_URL,
     address,
     abi: artifact.abi,
+    deployer: await signer.getAddress(),
     deployedAt: new Date().toISOString()
   };
 
-  const outputDir = path.resolve(__dirname, "..", "deployments", hre.network.name);
+  const outputDir = path.resolve(__dirname, "..", "deployments", "ganache");
   const outputFile = path.join(outputDir, "GradeManager.json");
 
-  // 将部署结果写入 deployments/localhost/GradeManager.json，方便前后端联调。
   await fs.mkdir(outputDir, { recursive: true });
   await fs.writeFile(outputFile, `${JSON.stringify(deployment, null, 2)}\n`, "utf8");
 
   console.log(`GradeManager deployed to ${address}`);
+  console.log(`Deployer: ${deployment.deployer}`);
+  console.log(`Ganache RPC: ${GANACHE_RPC_URL}`);
+  console.log(`Chain ID: ${deployment.chainId}`);
   console.log(`Deployment artifact saved to ${outputFile}`);
 }
 

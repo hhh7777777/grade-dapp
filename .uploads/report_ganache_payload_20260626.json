@@ -1,0 +1,26 @@
+{
+  "docPath": "D:\\区块链方向\\以太链\\qmdzy\\docs\\202312060206+洪钰婷+课程设计报告.doc",
+  "backupPath": "D:\\区块链方向\\以太链\\qmdzy\\docs\\202312060206+洪钰婷+课程设计报告.before-ganache-update.doc",
+  "replacements": [
+    ["Hardhat Localhost", "Ganache Localhost"],
+    ["http://127.0.0.1:8545", "http://127.0.0.1:7545"],
+    ["Chain ID 为 31337", "Chain ID 为 1337"],
+    ["非 31337 链", "非 1337 链"],
+    ["Hardhat 本地网络", "Ganache 本地网络"],
+    ["Hardhat 本地链", "Ganache 本地链"],
+    ["Hardhat 网络", "Ganache 网络"],
+    ["启动 Hardhat 节点", "连接正在运行的 Ganache 本地链"],
+    ["启动ganache本地链", "连接正在运行的 Ganache 本地链"],
+    ["本地测试网络，RPC 为 http://127.0.0.1:7545，Chain ID 为 1337。", "当前正在运行的 Ganache 本地测试网络，RPC 为 http://127.0.0.1:7545，Chain ID 为 1337。"]
+  ],
+  "paragraphs": {
+    "93": "Hardhat",
+    "94": "负责编译 Solidity 合约、执行部署脚本和运行合约自动化测试，并连接 Ganache 完成本地部署。",
+    "327": "项目根目录、backend 和 frontend 分别维护自己的 package.json。根目录脚本负责编译、清理、测试、部署本地合约、启动后端和启动前端；本次重新运行时直接选用已启动的 Ganache，本地链 RPC 为 http://127.0.0.1:7545，Chain ID 为 1337。",
+    "328": "npm install\u000bcd backend && npm install\u000bcd ../frontend && npm install\u000b\u000b# 终端 1：确认 Ganache 已经运行\u000b# RPC: http://127.0.0.1:7545，Chain ID: 1337\u000b\u000b# 终端 2：部署合约到当前 Ganache\u000b$env:RPC_URL='http://127.0.0.1:7545'; npm run deploy:local\u000b\u000b# 终端 3：启动后端并指向当前 Ganache\u000b$env:RPC_URL='http://127.0.0.1:7545'; $env:CHAIN_ID='1337'; npm run dev:backend\u000b\u000b# 终端 4：启动前端\u000bnpm run dev:frontend",
+    "332": "为了演示真实的钱包身份切换，需要在 MetaMask 中添加 Ganache 本地网络：RPC URL 为 http://127.0.0.1:7545，Chain ID 为 1337，货币符号为 ETH。本次重新部署后，合约管理员地址为 0x1041aa22679C20b3458C50f5367fb3d0fC877fFa，该地址对应当前 Ganache 的第一个账户；第二个或第三个 Ganache 测试账户可作为普通用户账号。当前钱包地址等于合约管理员地址时，页面允许进入管理员录入模块；当前钱包不是管理员时，页面只允许成绩查询。",
+    "335": "部署脚本 deploy.js 在合约部署成功后读取 GradeManager 的 artifact，并将 network、address、abi 和 deployedAt 写入 deployments/localhost/GradeManager.json。本次选用正在运行的 Ganache 重新部署后，network 为 localhost，合约地址为 0xfD0d4B2891658935eE3AA90e9FDa9e1DeAA8664D，部署时间为 2026-06-26T06:24:55.290Z；后端健康接口返回 chainId=1337、rpcUrl=http://127.0.0.1:7545、contractAddress=0xfD0d4B2891658935eE3AA90e9FDa9e1DeAA8664D、adminAddress=0x1041aa22679C20b3458C50f5367fb3d0fC877fFa。后端启动后通过 contract.js 读取该文件，再使用 ethers.Contract 创建只读合约实例或绑定管理员钱包的写入合约实例。该设计避免在后端代码中硬编码合约地址，提高了本地重新部署后的可维护性。",
+    "489": "通过本次课程设计，我完成了一个从智能合约到前端页面的完整 DApp 项目。项目虽然规模不大，但覆盖了以太坊 DApp 开发的关键链路：合约设计、Hardhat 合约编译与部署脚本、Ganache 本地链、ABI 与地址导出、后端接口、React 页面、MetaMask 钱包连接、交易签名、交易回执和自动化测试。与单纯编写一个合约相比，本项目更强调“链上合约”和“链下服务/前端”的协同，能够体现分布式应用开发课程的综合性要求。",
+    "490": "在调试过程中，主要困难集中在三个方面：第一，链上写入必须由管理员地址签名，如果后端或前端使用的账户不一致，就会出现权限错误；第二，合约重新部署后地址会变化，前后端必须读取最新 deployments/localhost/GradeManager.json，否则会调用到旧地址；第三，MetaMask 网络需要手动切换到 Ganache 本地链，Chain ID 与 RPC 配置错误会导致交易无法发送。本次重新运行后采用 RPC http://127.0.0.1:7545、Chain ID 1337、合约地址 0xfD0d4B2891658935eE3AA90e9FDa9e1DeAA8664D 作为最新演示环境。针对这些问题，系统通过健康检查接口、管理员地址接口、网络校验和页面提示进行了处理。"
+  }
+}

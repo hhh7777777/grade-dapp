@@ -2,20 +2,20 @@ const { Contract, JsonRpcProvider, Wallet } = require("ethers");
 const { getDeploymentFile, readDeployment } = require("./contract");
 
 function getRpcUrl() {
-  return process.env.RPC_URL || "http://127.0.0.1:8545";
+  return process.env.RPC_URL || "http://127.0.0.1:7545";
 }
 
 function getChainId() {
-  return Number(process.env.CHAIN_ID || 31337);
+  return Number(process.env.CHAIN_ID || 1337);
 }
 
-// 创建 ethers Provider，后端通过它连接 Hardhat 本地测试链。
+// Create an ethers provider connected to the local Ganache chain.
 function getProvider() {
   return new JsonRpcProvider(getRpcUrl(), getChainId());
 }
 
 function createAdminWallet(provider) {
-  // 优先使用 .env 中的私钥；未配置时使用 Hardhat 默认助记词，便于本地演示。
+  // Prefer .env private key; otherwise use the same mnemonic as the Ganache script.
   const privateKey = process.env.ADMIN_PRIVATE_KEY;
   if (privateKey && privateKey.trim()) {
     return new Wallet(privateKey.trim(), provider);

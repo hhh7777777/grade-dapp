@@ -7,8 +7,7 @@ function getDeploymentFile() {
     return path.resolve(process.cwd(), customFile.trim());
   }
 
-  // 默认读取 Hardhat localhost 部署产物，里面包含合约地址和 ABI。
-  return path.resolve(__dirname, "../../../deployments/localhost/GradeManager.json");
+  return path.resolve(__dirname, "../../../deployments/ganache/GradeManager.json");
 }
 
 function readDeployment() {

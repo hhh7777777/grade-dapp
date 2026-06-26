@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-// 管理员录入组件：保留给模块化版本使用，当前新版首页已将该逻辑整合到 Home.jsx。
+// 管理员录入组件：提供给模块化版本使用
 function shortHash(hash) {
   if (!hash) {
     return "-";

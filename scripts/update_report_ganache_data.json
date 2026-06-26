@@ -1,0 +1,12 @@
+{
+  "rpcUrl": "http://127.0.0.1:7545",
+  "chainId": "1337",
+  "deploymentFile": "deployments/ganache/GradeManager.json",
+  "networkName": "Ganache Localhost",
+  "notes": [
+    "Use Ganache as the local Ethereum chain.",
+    "Compile contracts with solc before deployment.",
+    "Deploy GradeManager with scripts/deploy.js.",
+    "The backend reads deployments/ganache/GradeManager.json by default."
+  ]
+}

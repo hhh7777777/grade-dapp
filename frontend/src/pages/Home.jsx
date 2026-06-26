@@ -292,6 +292,11 @@ export default function Home() {
     }
   }
 
+  async function handleConnectWallet() {
+    // 连接钱包按钮点击处理函数。
+    await syncWalletState({ requestAccounts: true, silent: false });
+  }
+
   async function switchToLocalChain() {
     const ethereum = getEthereum();
     if (!ethereum || expectedChainId === null) {
@@ -308,7 +313,7 @@ export default function Home() {
       });
       await syncWalletState({ requestAccounts: false, silent: true });
       setWalletTone("success");
-      setWalletStatus("已切换到本地 Hardhat 测试链");
+      setWalletStatus("已切换到本地 Ganache 测试链");
     } catch (error) {
       if (error?.code === 4902) {
         await ethereum.request({
@@ -316,19 +321,19 @@ export default function Home() {
           params: [
             {
               chainId: hexChainId,
-              chainName: "Hardhat Localhost",
+              chainName: "Ganache Localhost",
               nativeCurrency: {
                 name: "ETH",
                 symbol: "ETH",
                 decimals: 18
               },
-              rpcUrls: [health?.rpcUrl || "http://127.0.0.1:8545"]
+              rpcUrls: [health?.rpcUrl || "http://127.0.0.1:7545"]
             }
           ]
         });
         await syncWalletState({ requestAccounts: false, silent: true });
         setWalletTone("success");
-        setWalletStatus("本地 Hardhat 测试链已添加到 MetaMask");
+        setWalletStatus("本地 Ganache 测试链已添加到 MetaMask");
         return;
       }
 
@@ -423,7 +428,7 @@ export default function Home() {
 
     if (!isExpectedChain) {
       setAdminState("error");
-      setAdminMessage("当前钱包网络不是本地 Hardhat 测试链，请先切换网络");
+      setAdminMessage("当前钱包网络不是本地 Ganache 测试链，请先切换网络");
       return;
     }
 
@@ -489,11 +494,7 @@ export default function Home() {
           <h1>链上学生成绩管理系统</h1>
           <p className="hero__lead">查询成绩，管理员录入，结果上链。</p>
 
-          <div className="hero__meta">
-            <span>成绩永久存储</span>
-            <span>公开查询</span>
-            <span>不可篡改</span>
-          </div>
+
 
           <div className="hero__actions">
             <button type="button" className="button button--primary" onClick={focusQuery}>
@@ -719,7 +720,7 @@ export default function Home() {
             {hasMetaMask && !isExpectedChain ? (
               <div className="inline-tip">
                 <strong>当前钱包网络不是本地链。</strong>
-                <span>请切换到 Hardhat 本地网络。</span>
+                <span>请切换到 Ganache 本地网络。</span>
               </div>
             ) : null}
 
